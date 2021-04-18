@@ -19,7 +19,7 @@ data "aws_ami" "linux2" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami*gp2"]
+    values = ["amzn2-ami-hvm*gp2"]
   }
 }
 
@@ -47,10 +47,6 @@ resource "aws_launch_template" "this" {
     }
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
-
   dynamic "iam_instance_profile" {
     for_each = var.iam_name != "" ? list(var.iam_name) : []
     content {
@@ -73,7 +69,7 @@ resource "aws_launch_template" "this" {
   user_data = data.template_cloudinit_config.this.rendered
 }
 
-resource "aws_autoscaling_group" "asg" {
+resource "aws_autoscaling_group" "this" {
   name = var.name
 
   min_size         = var.node_min_cnt
