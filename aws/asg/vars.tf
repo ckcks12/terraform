@@ -57,6 +57,7 @@ variable "volume_size" {
 variable "iam_name" {
   type        = string
   description = "EC2 Instance IAM Profile Name"
+  default     = ""
 }
 
 variable "sg_ids" {
@@ -64,9 +65,9 @@ variable "sg_ids" {
   description = "EC2 Security Group Ids"
 }
 
-variable "user_data" {
+variable "cloudinit" {
   type        = string
-  description = "EC2 User Data"
+  description = "EC2 cloudinit.yml for User Data"
 }
 
 variable "key_name" {

@@ -23,6 +23,14 @@ data "aws_ami" "linux2" {
   }
 }
 
+data "template_cloudinit_config" "this" {
+  gzip = true
+  part {
+    content_type = "text/cloud-config"
+    content      = var.cloudinit
+  }
+}
+
 resource "aws_launch_template" "this" {
   name          = var.name
   image_id      = var.ami == "" ? data.aws_ami.linux2.id : var.ami
@@ -59,7 +67,7 @@ resource "aws_launch_template" "this" {
 
   key_name = var.key_name
 
-  user_data = var.user_data
+  user_data = data.template_cloudinit_config.this.rendered
 }
 
 resource "aws_autoscaling_group" "asg" {
