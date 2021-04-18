@@ -51,8 +51,11 @@ resource "aws_launch_template" "this" {
     create_before_destroy = true
   }
 
-  iam_instance_profile {
-    name = var.iam_name
+  dynamic "iam_instance_profile" {
+    for_each = var.iam_name != "" ? list(var.iam_name) : []
+    content {
+      name = var.iam_name
+    }
   }
 
   monitoring {
