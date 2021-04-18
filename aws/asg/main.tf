@@ -25,7 +25,7 @@ data "aws_ami" "linux2" {
 
 resource "aws_launch_template" "this" {
   name          = var.name
-  image_id      = data.aws_ami.linux2.id
+  image_id      = var.ami == "" ? data.aws_ami.linux2.id : var.ami
   instance_type = var.instance_type
   ebs_optimized = var.ebs_optimized
 
